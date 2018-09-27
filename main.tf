@@ -10,7 +10,7 @@ locals {
   atlantis_url_events = "${local.atlantis_url}/events"
 
   # docker command
-  docker_command = "${var.github_module_ssh_deploy_key == "" ? ["server"] : ["ssh-add", "<$(echo "$GITHUB_MODULE_SSH_DEPLOY_KEY")", "&&", "exec","/usr/local/bin/docker-entrypoint.sh", "server"]}"
+  docker_command = "${var.github_module_ssh_deploy_key == "" ? ["server"] : ["mkdir ~/.ssh", "&&" ,"echo", "$GITHUB_MODULE_SSH_DEPLOY_KEY", ">>", "~/.ssh/id_rsa ", "&&", "chmod", "600", "~/.ssh/id_rsa", "&&", "exec","/usr/local/bin/docker-entrypoint.sh", "server"]}"
 
   tags = {
     Name = "${var.name}"
