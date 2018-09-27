@@ -117,6 +117,11 @@ variable "github_repo_names" {
   default     = []
 }
 
+variable "github_module_ssh_deploy_key" {
+  description = "A ssh deploy key for the referenced github module"
+  default = ""
+}
+
 variable "allow_repo_config" {
   description = "When true allows the use of atlantis.yaml config files within the source repos."
   type        = "string"
