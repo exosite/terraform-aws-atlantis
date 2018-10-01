@@ -10,7 +10,7 @@ locals {
   atlantis_url_events = "${local.atlantis_url}/events"
 
   server_command = "exec /usr/local/bin/docker-entrypoint.sh server"
-  setup_ssh_command = "mkdir ~/.ssh && echo $GITHUB_MODULE_BASE64_SSH_DEPLOY_KEY | base64 -d > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa "
+  setup_ssh_command = "mkdir ~/.ssh && echo $GITHUB_MODULE_BASE64_SSH_DEPLOY_KEY | base64 -d > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa  && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts"
   server_with_ssh_command = "{${local.setup_ssh_command}} && ${local.server_command}"
   docker_command = "${var.github_module_ssh_deploy_key == "" ? "${local.server_command}" : "${local.server_with_ssh_command}" }"
 
