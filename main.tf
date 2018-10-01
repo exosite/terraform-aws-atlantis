@@ -9,8 +9,9 @@ locals {
   atlantis_url        = "https://${coalesce(element(concat(aws_route53_record.atlantis.*.fqdn, list("")), 0), module.alb.dns_name)}"
   atlantis_url_events = "${local.atlantis_url}/events"
 
-  # docker command
-  docker_command = "${var.github_module_ssh_deploy_key == "" ? ["server"] : ["mkdir ~/.ssh", "&&" ,"echo", "$GITHUB_MODULE_SSH_DEPLOY_KEY", ">>", "~/.ssh/id_rsa ", "&&", "chmod", "600", "~/.ssh/id_rsa", "&&", "exec","/usr/local/bin/docker-entrypoint.sh", "server"]}"
+  server_command = "exec /usr/local/bin/docker-entrypoint.sh server"
+  server_with_ssh_command = "mkdir ~/.ssh && echo $GITHUB_MODULE_SSH_DEPLOY_KEY > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ${local.server_command}"
+  docker_command = "${var.github_module_ssh_deploy_key == "" ? "${local.server_command}" : "${local.server_with_ssh_command}" }"
 
   tags = {
     Name = "${var.name}"
@@ -287,7 +288,7 @@ resource "aws_ecs_task_definition" "atlantis" {
         },
         "mountPoints": [],
         "name": "${var.name}",
-        "command": "${local.docker_command}",
+        "command": ["/bin/sh", "-c", "${local.docker_command}"],
         "portMappings": [
             {
                 "containerPort": 4141,
