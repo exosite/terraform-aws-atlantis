@@ -328,6 +328,8 @@ resource "aws_ecs_service" "atlantis" {
     container_port   = 4141
     target_group_arn = "${element(module.alb.target_group_arns, 0)}"
   }
+
+  tags = "${var.atlantis_tags}"
 }
 
 ###################

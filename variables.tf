@@ -133,3 +133,8 @@ variable "policies_arn" {
   type        = "list"
   default     = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"]
 }
+
+variable "atlantis_tags" {
+  description = "tag to apply on atlantis fargate"
+  default     = {}
+}
