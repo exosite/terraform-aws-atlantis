@@ -119,7 +119,7 @@ variable "github_repo_names" {
 
 variable "github_module_ssh_deploy_key" {
   description = "A ssh deploy key for the referenced github module"
-  default = ""
+  default     = ""
 }
 
 variable "allow_repo_config" {
@@ -137,4 +137,9 @@ variable "policies_arn" {
 variable "atlantis_tags" {
   description = "tag to apply on atlantis fargate"
   default     = {}
+}
+
+variable "atlantis_repo_config_json" {
+  description = "Json content, atlantis server side repo config"
+  default     = ""
 }
