@@ -5,14 +5,14 @@ locals {
   public_subnet_ids  = "${coalescelist(module.vpc.public_subnets, var.public_subnet_ids)}"
 
   # Atlantis
-  atlantis_image      = "${var.atlantis_image == "" ? "runatlantis/atlantis:${var.atlantis_version}" : "${var.atlantis_image}" }"
+  atlantis_image      = "${var.atlantis_image == "" ? "runatlantis/atlantis:${var.atlantis_version}" : "${var.atlantis_image}"}"
   atlantis_url        = "https://${coalesce(element(concat(aws_route53_record.atlantis.*.fqdn, list("")), 0), module.alb.dns_name)}"
   atlantis_url_events = "${local.atlantis_url}/events"
 
   server_command          = "exec /usr/local/bin/docker-entrypoint.sh server"
   setup_ssh_command       = "mkdir /home/atlantis/.ssh && echo $GITHUB_MODULE_BASE64_SSH_DEPLOY_KEY | base64 -d > /home/atlantis/.ssh/id_rsa && chmod 600 /home/atlantis/.ssh/id_rsa  && ssh-keyscan -t rsa github.com >> /home/atlantis/.ssh/known_hosts && chown -R atlantis:atlantis /home/atlantis/.ssh"
   server_with_ssh_command = "${local.setup_ssh_command} && ${local.server_command}"
-  docker_command          = "${var.github_module_ssh_deploy_key == "" ? "${local.server_command}" : "${local.server_with_ssh_command}" }"
+  docker_command          = "${var.github_module_ssh_deploy_key == "" ? "${local.server_command}" : "${local.server_with_ssh_command}"}"
 
   tags = {
     Name = "${var.name}"
@@ -239,10 +239,6 @@ resource "aws_ecs_task_definition" "atlantis" {
     {
         "cpu": 0,
         "environment": [
-            {
-                "name": "ATLANTIS_ALLOW_REPO_CONFIG",
-                "value": "${var.allow_repo_config}"
-            },
             {
                 "name": "ATLANTIS_LOG_LEVEL",
                 "value": "debug"

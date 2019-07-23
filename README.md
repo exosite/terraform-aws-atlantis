@@ -46,7 +46,7 @@ $ cd terraform-aws-atlantis
 ### Run Atlantis as a Terraform module
 
 This way allows integration with your existing Terraform configurations.
- 
+
 ```hcl
 module "atlantis" {
   source = "terraform-aws-modules/atlantis/aws"
@@ -103,7 +103,6 @@ If all provided subnets are public (no NAT gateway) then `ecs_service_assign_pub
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | acm_certificate_domain_name | Route53 domain name to use for ACM certificate. Route53 zone for this domain should be created in advance. Specify if it is different from value in `route53_zone_name` | string | `` | no |
-| allow_repo_config | When true allows the use of atlantis.yaml config files within the source repos. | string | `false` | no |
 | atlantis_github_user | GitHub username of the user that is running the Atlantis command | string | - | yes |
 | atlantis_github_user_token | GitHub token of the user that is running the Atlantis command | string | - | yes |
 | atlantis_image | Docker image to run Atlantis with. If not specified, official Atlantis image will be used | string | `` | no |
