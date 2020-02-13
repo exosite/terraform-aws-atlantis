@@ -15,7 +15,11 @@ locals {
   docker_command          = "${var.github_module_ssh_deploy_key == "" ? "${local.server_command}" : "${local.server_with_ssh_command}"}"
 
   tags = {
-    Name = "${var.name}"
+    Name        = "${var.name}"
+    Customer    = "internal"
+    Environment = "tool"
+    Product     = "infrastructure"
+    Service     = "atlantis"
   }
 }
 
